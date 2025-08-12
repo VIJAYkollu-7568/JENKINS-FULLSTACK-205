@@ -1,9 +1,12 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'Maven-3.9.11' // This must match exactly the name in Jenkins Maven Installations
+    }
+
     stages {
 
-        // ===== FRONTEND BUILD =====
         stage('Build Frontend') {
             steps {
                 dir('STUDENTAPI-REACT') {
@@ -13,7 +16,6 @@ pipeline {
             }
         }
 
-        // ===== FRONTEND DEPLOY =====
         stage('Deploy Frontend to Tomcat') {
             steps {
                 bat '''
@@ -26,7 +28,6 @@ pipeline {
             }
         }
 
-        // ===== BACKEND BUILD =====
         stage('Build Backend') {
             steps {
                 dir('STUDENTAPI-SPRINGBOOT') {
@@ -35,7 +36,6 @@ pipeline {
             }
         }
 
-        // ===== BACKEND DEPLOY =====
         stage('Deploy Backend to Tomcat') {
             steps {
                 bat '''
@@ -49,7 +49,6 @@ pipeline {
                 '''
             }
         }
-
     }
 
     post {
