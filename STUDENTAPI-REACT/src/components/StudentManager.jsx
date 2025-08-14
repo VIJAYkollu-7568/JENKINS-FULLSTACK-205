@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './style.css';
-import config from './config.js';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./style.css";
+import config from "./config.js";
 
 const StudentManager = () => {
   const [students, setStudents] = useState([]);
   const [student, setStudent] = useState({
-    id: '',
-    name: '',
-    gender: '',
-    department: '',
-    program: '',
-    year: '',
-    semester: '',
-    email: '',
-    password: '',
-    contact: ''
+    id: "",
+    name: "",
+    gender: "",
+    department: "",
+    program: "",
+    year: "",
+    semester: "",
+    email: "",
+    password: "",
+    contact: "",
   });
-  const [idToFetch, setIdToFetch] = useState('');
+  const [idToFetch, setIdToFetch] = useState("");
   const [fetchedStudent, setFetchedStudent] = useState(null);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [editMode, setEditMode] = useState(false);
 
   const baseUrl = `${config.url}/studentapi`;
@@ -33,7 +33,7 @@ const StudentManager = () => {
       const res = await axios.get(`${baseUrl}/all`);
       setStudents(res.data);
     } catch (error) {
-      setMessage('Failed to fetch students.');
+      setMessage("Failed to fetch students.");
     }
   };
 
@@ -41,10 +41,9 @@ const StudentManager = () => {
     setStudent({ ...student, [e.target.name]: e.target.value });
   };
 
-
   const validateForm = () => {
     for (let key in student) {
-      if (!student[key] || student[key].toString().trim() === '') {
+      if (!student[key] || student[key].toString().trim() === "") {
         setMessage(`Please fill out the ${key} field.`);
         return false;
       }
@@ -56,11 +55,11 @@ const StudentManager = () => {
     if (!validateForm()) return;
     try {
       await axios.post(`${baseUrl}/add`, student);
-      setMessage('Student added successfully.');
+      setMessage("Student added successfully.");
       fetchAllStudents();
       resetForm();
     } catch (error) {
-      setMessage('Error adding student.');
+      setMessage("Error adding student.");
     }
   };
 
@@ -68,11 +67,11 @@ const StudentManager = () => {
     if (!validateForm()) return;
     try {
       await axios.put(`${baseUrl}/update`, student);
-      setMessage('Student updated successfully.');
+      setMessage("Student updated successfully.");
       fetchAllStudents();
       resetForm();
     } catch (error) {
-      setMessage('Error updating student.');
+      setMessage("Error updating student.");
     }
   };
 
@@ -82,7 +81,7 @@ const StudentManager = () => {
       setMessage(res.data);
       fetchAllStudents();
     } catch (error) {
-      setMessage('Error deleting student.');
+      setMessage("Error deleting student.");
     }
   };
 
@@ -90,10 +89,10 @@ const StudentManager = () => {
     try {
       const res = await axios.get(`${baseUrl}/get/${idToFetch}`);
       setFetchedStudent(res.data);
-      setMessage('');
+      setMessage("");
     } catch (error) {
       setFetchedStudent(null);
-      setMessage('Student not found.');
+      setMessage("Student not found.");
     }
   };
 
@@ -105,49 +104,71 @@ const StudentManager = () => {
 
   const resetForm = () => {
     setStudent({
-      id: '',
-      name: '',
-      gender: '',
-      department: '',
-      program: '',
-      year: '',
-      semester: '',
-      email: '',
-      password: '',
-      contact: ''
+      id: "",
+      name: "",
+      gender: "",
+      department: "",
+      program: "",
+      year: "",
+      semester: "",
+      email: "",
+      password: "",
+      contact: "",
     });
     setEditMode(false);
   };
 
   return (
     <div className="student-container">
+      {message && (
+        <div
+          className={`message-banner ${
+            message.toLowerCase().includes("error") ? "error" : "success"
+          }`}
+        >
+          {message}
+        </div>
+      )}
 
-{message && (
-  <div className={`message-banner ${message.toLowerCase().includes('error') ? 'error' : 'success'}`}>
-    {message}
-  </div>
-)}
-
-
-      <h2>Student Management</h2>
+      <h2>Student Management - Happy Independence</h2>
 
       <div>
-        <h3>{editMode ? 'Edit Student' : 'Add Student'}</h3>
+        <h3>{editMode ? "Edit Student" : "Add Student"}</h3>
         <div className="form-grid">
-          <input type="number" name="id" placeholder="ID" value={student.id} onChange={handleChange} />
-          <input type="text" name="name" placeholder="Name" value={student.name} onChange={handleChange} />
+          <input
+            type="number"
+            name="id"
+            placeholder="ID"
+            value={student.id}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="name"
+            placeholder="Name"
+            value={student.name}
+            onChange={handleChange}
+          />
           <select name="gender" value={student.gender} onChange={handleChange}>
             <option value="">Select Gender</option>
             <option value="MALE">MALE</option>
             <option value="FEMALE">FEMALE</option>
           </select>
-          <select name="department" value={student.department} onChange={handleChange}>
+          <select
+            name="department"
+            value={student.department}
+            onChange={handleChange}
+          >
             <option value="">Select Department</option>
             <option value="CSE">CSE</option>
             <option value="ECE">ECE</option>
             <option value="CS&IT">CS&IT</option>
           </select>
-          <select name="program" value={student.program} onChange={handleChange}>
+          <select
+            name="program"
+            value={student.program}
+            onChange={handleChange}
+          >
             <option value="">Select Program</option>
             <option value="B.Tech">B.Tech</option>
             <option value="M.Tech">M.Tech</option>
@@ -161,23 +182,51 @@ const StudentManager = () => {
             <option value="3">3</option>
             <option value="4">4</option>
           </select>
-          <select name="semester" value={student.semester} onChange={handleChange}>
+          <select
+            name="semester"
+            value={student.semester}
+            onChange={handleChange}
+          >
             <option value="">Select Semester</option>
             <option value="ODD">ODD</option>
             <option value="EVEN">EVEN</option>
           </select>
-          <input type="email" name="email" placeholder="Email" value={student.email} onChange={handleChange} />
-          <input type="password" name="password" placeholder="Password" value={student.password} onChange={handleChange} />
-          <input type="text" name="contact" placeholder="Contact" value={student.contact} onChange={handleChange} />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={student.email}
+            onChange={handleChange}
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={student.password}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="contact"
+            placeholder="Contact"
+            value={student.contact}
+            onChange={handleChange}
+          />
         </div>
 
         <div className="btn-group">
           {!editMode ? (
-            <button className="btn-blue" onClick={addStudent}>Add Student</button>
+            <button className="btn-blue" onClick={addStudent}>
+              Add Student
+            </button>
           ) : (
             <>
-              <button className="btn-green" onClick={updateStudent}>Update Student</button>
-              <button className="btn-gray" onClick={resetForm}>Cancel</button>
+              <button className="btn-green" onClick={updateStudent}>
+                Update Student
+              </button>
+              <button className="btn-gray" onClick={resetForm}>
+                Cancel
+              </button>
             </>
           )}
         </div>
@@ -191,7 +240,9 @@ const StudentManager = () => {
           onChange={(e) => setIdToFetch(e.target.value)}
           placeholder="Enter ID"
         />
-        <button className="btn-blue" onClick={getStudentById}>Fetch</button>
+        <button className="btn-blue" onClick={getStudentById}>
+          Fetch
+        </button>
 
         {fetchedStudent && (
           <div>
@@ -224,8 +275,18 @@ const StudentManager = () => {
                     ))}
                     <td>
                       <div className="action-buttons">
-                        <button className="btn-green" onClick={() => handleEdit(stud)}>Edit</button>
-                        <button className="btn-red" onClick={() => deleteStudent(stud.id)}>Delete</button>
+                        <button
+                          className="btn-green"
+                          onClick={() => handleEdit(stud)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="btn-red"
+                          onClick={() => deleteStudent(stud.id)}
+                        >
+                          Delete
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -235,7 +296,6 @@ const StudentManager = () => {
           </div>
         )}
       </div>
-
     </div>
   );
 };
