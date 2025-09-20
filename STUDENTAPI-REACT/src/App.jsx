@@ -1,12 +1,11 @@
-import StudentManager from "./components/StudentManager"
+import StudentManager from "./components/StudentManager";
 
 function App() {
-
   return (
     <>
-    <StudentManager/>
+      <StudentManager />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -130,7 +130,7 @@ const StudentManager = () => {
         </div>
       )}
 
-      <h2>Student Management - Happy Independence</h2>
+      <h2>Student Management Happy Independence</h2>
 
       <div>
         <h3>{editMode ? "Edit Student" : "Add Student"}</h3>
